@@ -12,7 +12,8 @@ Reflection 模式让 Agent 先生成一个初始结果，然后自己审查并�
 - typing：类型注解，类似 TS 的类型系统
 - llm_client：本项目的 LLM 客户端封装
 """
-from typing import List, Dict, Any  # 类型注解，类似 TS 的 Array<T>、Record<K, V>、any
+# 类型注解，类似 TS 的 Array<T>、Record<K, V>、any
+from typing import List, Dict, Any
 # 假设 llm_client.py 文件已存在，并从中导入 HelloAgentsLLM 类
 from llm_client import HelloAgentsLLM
 
@@ -189,7 +190,7 @@ class ReflectionAgent:
             )
             refined_code = self._get_llm_response(refine_prompt)
             self.memory.add_record("execution", refined_code)
-        
+
         final_code = self.memory.get_last_execution()
         print(f"\n--- 任务完成 ---\n最终生成的代码:\n{final_code}")
         return final_code

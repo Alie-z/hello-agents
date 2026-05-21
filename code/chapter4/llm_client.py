@@ -9,9 +9,12 @@
 - dotenv：从 .env 文件加载环境变量，类似前端项目用 .env.local 配置密钥的方式
 """
 import os
-from openai import OpenAI  # OpenAI 官方 SDK，类似前端用 axios 创建一个预配置的 HTTP 客户端
-from dotenv import load_dotenv  # 从 .env 文件读取环境变量，类似 Vite/CRA 里的 import.meta.env
-from typing import List, Dict  # 类型注解，类似 TS 的 Array<T> 和 Record<string, string>
+ # OpenAI 官方 SDK，类似前端用 axios 创建一个预配置的 HTTP 客户端
+from openai import OpenAI
+# 从 .env 文件读取环境变量，类似 Vite/CRA 里的 import.meta.env
+from dotenv import load_dotenv
+ # 类型注解，类似 TS 的 Array<T> 和 Record<string, string>
+from typing import List, Dict
 
 # 加载 .env 文件中的环境变量
 load_dotenv()
@@ -39,7 +42,7 @@ class HelloAgentsLLM:
         apiKey = apiKey or os.getenv("LLM_API_KEY")
         baseUrl = baseUrl or os.getenv("LLM_BASE_URL")
         timeout = timeout or int(os.getenv("LLM_TIMEOUT", 60))
-        
+
         # all() 检查列表里的元素是否全部为真值，类似 JS 的 [a, b, c].every(Boolean)
         if not all([self.model, apiKey, baseUrl]):
             raise ValueError("模型ID、API密钥和服务地址必须被提供或在.env文件中定义。")
@@ -66,7 +69,7 @@ class HelloAgentsLLM:
                 temperature=temperature,
                 stream=True,  # 流式响应：数据一块块到达，类似前端用 fetch + ReadableStream 或 EventSource (SSE)
             )
-            
+
             # 处理流式响应
             print("✅ 大语言模型响应成功:")
             collected_content = []
@@ -94,12 +97,12 @@ if __name__ == '__main__':
     # 类似 Node 里的 if (require.main === module) { ... }
     try:
         llmClient = HelloAgentsLLM()
-        
+
         exampleMessages = [
             {"role": "system", "content": "You are a helpful assistant that writes Python code."},
             {"role": "user", "content": "写一个快速排序算法"}
         ]
-        
+
         print("--- 调用LLM ---")
         responseText = llmClient.think(exampleMessages)
         if responseText:
