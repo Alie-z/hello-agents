@@ -1,5 +1,6 @@
 - [Hello-Agents](./README.md)
   - [前言](./前言.md)
+  - [前端转 Agent 全栈学习路线](./学习路线-前端转Agent全栈.md)
   
 - <strong>第一部分：智能体与语言模型基础</strong>
   - [第一章 初识智能体](./chapter1/第一章%20初识智能体.md)

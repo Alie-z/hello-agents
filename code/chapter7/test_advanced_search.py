@@ -1,3 +1,11 @@
+"""
+本文件作用：测试高级搜索工具，包括多源搜索、API 配置检查和与 Agent 的集成。
+
+测试内容：
+- test_advanced_search()：执行多个搜索查询
+- test_api_configuration()：检查 API 配置是否正确
+- test_with_agent()：展示工具描述（Agent 集成准备）
+"""
 # test_advanced_search.py
 from dotenv import load_dotenv
 from my_advanced_search import create_advanced_search_registry, MyAdvancedSearchTool
@@ -20,6 +28,7 @@ def test_advanced_search():
         "2024年科技趋势"
     ]
 
+    # enumerate(list, 1) 从 1 开始编号
     for i, query in enumerate(test_queries, 1):
         print(f"测试 {i}: {query}")
         result = registry.execute_tool("advanced_search", query)
@@ -31,6 +40,7 @@ def test_api_configuration():
     print("🔧 测试API配置检查:")
 
     # 直接创建搜索工具实例
+    # 构造时会自动检测哪些 API Key 可用
     search_tool = MyAdvancedSearchTool()
 
     # 如果没有配置API，会显示配置提示
@@ -43,6 +53,7 @@ def test_with_agent():
     print("高级搜索工具已准备就绪，可以与Agent集成使用")
 
     # 显示工具描述
+    # Agent 在构建 prompt 时会调用这个方法，获取工具的文本描述
     registry = create_advanced_search_registry()
     tools_desc = registry.get_tools_description()
     print(f"工具描述:\n{tools_desc}")

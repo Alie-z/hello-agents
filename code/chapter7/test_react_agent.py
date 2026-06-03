@@ -1,3 +1,10 @@
+"""
+本文件作用：测试 MyReActAgent 的推理行动能力，包括数学计算、信息搜索、复合推理等场景。
+
+测试内容：
+- test_react_agent()：基础功能测试（数学、搜索、多步推理）
+- test_custom_prompt()：自定义提示词测试
+"""
 # test_react_agent.py
 from dotenv import load_dotenv
 from hello_agents import HelloAgentsLLM, ToolRegistry
@@ -19,6 +26,8 @@ def test_react_agent():
     print("🔧 注册测试工具...")
     
     # 注册计算器工具
+    # try...except ImportError 模式：尝试导入，导入失败则优雅降级
+    # 类似 JS 的 try { require('xxx') } catch { /* 可选依赖 */ }
     try:
         from hello_agents import calculate
         tool_registry.register_function("calculate", "执行数学计算，支持基本的四则运算", calculate)
@@ -80,8 +89,11 @@ def test_react_agent():
     print(f"\n📝 对话历史记录: {len(agent.get_history())} 条消息")
     
     # 显示工具使用统计
+    # _tools 是 ToolRegistry 内部字典，存储所有注册的工具
+    # ._前缀表示"内部属性"（约定私有），这里是为了调试才直接访问
     print(f"\n🛠️ 可用工具数量: {len(tool_registry._tools)}")
     print("已注册的工具:")
+    # .keys() 返回字典的所有 key，类似 JS 的 Object.keys(obj)
     for tool_name in tool_registry._tools.keys():
         print(f"  - {tool_name}")
     
@@ -106,6 +118,7 @@ def test_custom_prompt():
         pass
     
     # 自定义提示词（更简洁的版本）
+    # 三引号字符串可以跨多行，类似 JS 的模板字符串 `...`
     custom_prompt = """你是一个数学专家AI助手。
 
 可用工具：{tools}
@@ -137,6 +150,8 @@ Action: [tool_name[input] 或 Finish[答案]]
     except Exception as e:
         print(f"❌ 自定义提示词测试失败: {e}")
 
+# 仅在直接运行此文件时执行
+# 类似 Node 里的 if (require.main === module) { ... }
 if __name__ == "__main__":
     # 运行基础测试
     test_react_agent()

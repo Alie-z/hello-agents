@@ -115,35 +115,35 @@ def create_user_proxy():
 
 async def run_software_development_team():
     """运行软件开发团队协作"""
-    
+
     print("🔧 正在初始化模型客户端...")
-    
+
     # 先使用标准的 OpenAI 客户端测试
     model_client = create_openai_model_client()
-    
+
     print("👥 正在创建智能体团队...")
-    
+
     # 创建智能体团队
     product_manager = create_product_manager(model_client)
     engineer = create_engineer(model_client)
     code_reviewer = create_code_reviewer(model_client)
     user_proxy = create_user_proxy()
-    
+
     # 添加终止条件
     termination = TextMentionTermination("TERMINATE")
-    
+
     # 创建团队聊天
     team_chat = RoundRobinGroupChat(
         participants=[
             product_manager,
-            engineer, 
+            engineer,
             code_reviewer,
             user_proxy
         ],
         termination_condition=termination,
         max_turns=20,  # 增加最大轮次
     )
-    
+
     # 定义开发任务
     task = """我们需要开发一个比特币价格显示应用，具体要求如下：
 
@@ -158,17 +158,17 @@ async def run_software_development_team():
 - 添加适当的错误处理和加载状态
 
 请团队协作完成这个任务，从需求分析到最终实现。"""
-    
+
     # 执行团队协作
     print("🚀 启动 AutoGen 软件开发团队协作...")
     print("=" * 60)
-    
+
     # 使用 Console 来显示对话过程
     result = await Console(team_chat.run_stream(task=task))
-    
+
     print("\n" + "=" * 60)
     print("✅ 团队协作完成！")
-    
+
     return result
 
 # 主程序入口
@@ -176,11 +176,11 @@ if __name__ == "__main__":
     try:
         # 运行异步协作流程
         result = asyncio.run(run_software_development_team())
-        
+
         print(f"\n📋 协作结果摘要：")
         print(f"- 参与智能体数量：4个")
         print(f"- 任务完成状态：{'成功' if result else '需要进一步处理'}")
-        
+
     except ValueError as e:
         print(f"❌ 配置错误：{e}")
         print("请检查 .env 文件中的配置是否正确")
